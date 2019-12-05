@@ -18,19 +18,47 @@ public class petsSpaGUI extends Application
     public void checkInPage(Stage secondaryStage)
     {
         try {
+        	boolean open = true;
+        	boolean animals = false;
+            VBox list = new VBox();
+        	while(open)
+        		
+        	{ if (!animals)
+        	{
+        		list.getChildren().clear();
             ArrayList<Button> b = new ArrayList<>();
             for(int i =0; i<owners.size(); i++)
             {
                 b.add(new Button(owners.get(i).getName()));
+            animals = true;
             }
-            VBox list = new VBox();
             list.getChildren().addAll(b);
+            
+            Button close = new Button("close");
+            close.setOnAction(new EventHandler<ActionEvent>()
+            		{
+            	@Override public void handle(ActionEvent e)
+            	{
+            		secondaryStage.close();
+            	}
+            		});
+
             list.setSpacing(10);
             Group things = new Group(list);
             Scene scene = new Scene(things,600f,300f);
             secondaryStage.setScene(scene);
             secondaryStage.setTitle("check in page");
             secondaryStage.show();
+        	}
+
+
+            list.setSpacing(10);
+            Group things = new Group(list);
+            Scene scene = new Scene(things,600f,300f);
+            secondaryStage.setScene(scene);
+            secondaryStage.setTitle("check in page");
+            secondaryStage.show();
+        }
         }
         catch(Exception e)
         {

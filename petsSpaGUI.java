@@ -7,30 +7,89 @@ import javafx.geometry.Insets;
 import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
-import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
+import javafx.scene.text.Font;
+import javafx.scene.text.Text;
+
+
 public class petsSpaGUI extends Application
 {
 
     private static ArrayList<Owners> owners = new ArrayList<>();
 
+    public void checkinAnimals(Stage secondaryStage,int o)
+    {
+    	try {
+    		VBox listb =  new VBox();
+    		VBox listT = new VBox();
+    		ArrayList<Button>  b = new ArrayList<>();
+    		ArrayList<Text> text = new ArrayList<>();
+    		
+    		for(int i = 0; i<owners.get(o).getPets().size();i++)
+    		{
+    			b.add(new Button(owners.get(o).getPets().get(i).getName()));
+    			text.add(new Text());
+    		}
+    		for(int i = 0;i< b.size();i++)
+    		{
+    			int spot = i;
+    			b.get(i).setOnAction(new EventHandler<ActionEvent>() {
+    				@Override public void handle(ActionEvent e)
+    				{
+    					owners.get(o).getPets().get(spot).setIn(true);
+    				}
+    			});
+    		}
+    		Button back = new Button("back");
+    		back.setOnAction(new EventHandler<ActionEvent>() {
+    			
+    			@Override public void handle(ActionEvent e)
+    			{
+    				checkInPage(secondaryStage);
+    			}
+    		}
+    				
+    			);
+    			
+    		
+    		listb.getChildren().addAll(b);
+    		listb.getChildren().add(back);
+    		listb.setSpacing(20);
+    		HBox row = new HBox();
+    		row.getChildren().addAll(listb, listT);
+    		Group root = new Group(listb);
+    		Scene scene = new Scene(root, 600,300);
+    		secondaryStage.setScene(scene);
+    		
+    	}
+    	catch(Exception e){
+    		
+    	}
+    }
+    
     public void checkInPage(Stage secondaryStage)
     {
         try {
-        	boolean open = true;
-        	boolean animals = false;
+
             VBox list = new VBox();
-        	while(open)
-        		
-        	{ if (!animals)
-        	{
+
         		list.getChildren().clear();
             ArrayList<Button> b = new ArrayList<>();
             for(int i =0; i<owners.size(); i++)
             {
                 b.add(new Button(owners.get(i).getName()));
-            animals = true;
+            }
+            for(int i = 0; i<b.size();i++)
+            {
+            	int spot = i;
+            	b.get(i).setOnAction(new EventHandler<ActionEvent>(){
+            		@Override public void handle(ActionEvent e)
+            		{
+            			checkinAnimals(secondaryStage,spot);
+            		}
+            	});
             }
             list.getChildren().addAll(b);
             
@@ -39,26 +98,18 @@ public class petsSpaGUI extends Application
             		{
             	@Override public void handle(ActionEvent e)
             	{
+            		
             		secondaryStage.close();
             	}
             		});
-
+            list.getChildren().add(close);
             list.setSpacing(10);
             Group things = new Group(list);
             Scene scene = new Scene(things,600f,300f);
             secondaryStage.setScene(scene);
             secondaryStage.setTitle("check in page");
             secondaryStage.show();
-        	}
 
-
-            list.setSpacing(10);
-            Group things = new Group(list);
-            Scene scene = new Scene(things,600f,300f);
-            secondaryStage.setScene(scene);
-            secondaryStage.setTitle("check in page");
-            secondaryStage.show();
-        }
         }
         catch(Exception e)
         {

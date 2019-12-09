@@ -56,7 +56,7 @@ public class petsSpaGUI extends Application
     	}
     	catch(Exception e)
     	{
-    		
+    		e.printStackTrace();
     	}
     }
     
@@ -116,6 +116,41 @@ public class petsSpaGUI extends Application
     		
     	}
     }
+    
+    public void showBills(Stage secondaryStage)
+    {
+    	try {
+    		VBox list =  new VBox();
+    		ArrayList<Text> text =  new ArrayList<>();
+    		
+    		for(int i =0; i<owners.size();i++)
+    		{
+    			text.add(new Text(owners.get(i).toString()));
+    			text.get(i).setFont(new Font(15));
+    			
+    		}
+    		Button close =  new Button("close");
+    		close.setOnAction(new EventHandler<ActionEvent>()
+    				{
+    			@Override public void handle(ActionEvent e)
+    			{
+    				secondaryStage.close();
+    			}
+    				});
+    		list.getChildren().addAll(text);
+    		list.getChildren().add(close);
+    		list.setSpacing(20);
+    		Group root = new Group(list);
+    		Scene scene = new Scene(root, 600,300);
+    		secondaryStage.setScene(scene);
+    		secondaryStage.show();
+    	}
+    	catch(Exception e)
+    	{
+    		e.printStackTrace();
+    	}
+    }
+    
     
     public void checkInPage(Stage secondaryStage)
     {
@@ -196,6 +231,12 @@ public class petsSpaGUI extends Application
             		});
             
             Button bills = new Button("bills");
+            bills.setOnAction(new EventHandler<ActionEvent>()
+            		{
+            	@Override public void handle(ActionEvent e) {
+            		showBills(new Stage());
+            	}
+            		});
 
             Button addCustomer = new Button("Add Customers");
 

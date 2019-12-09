@@ -18,7 +18,50 @@ public class petsSpaGUI extends Application
 {
 
     private static ArrayList<Owners> owners = new ArrayList<>();
-
+    
+    public void showStatus(Stage secondaryStage)
+    {
+    	try {
+    		VBox list = new VBox();
+    		ArrayList<Text> text =  new ArrayList<>();
+    		for(int i = 0; i<owners.size();i++)
+    		{
+    			for(int j = 0; j<owners.get(i).getPets().size();j++)
+    			{
+    				if(owners.get(i).getPets().get(j).isIn())
+    					text.add(new Text(owners.get(i).getPets().get(j).toString()));
+    			}
+    		}
+    		Button back = new Button("close");
+    		back.setOnAction(new EventHandler<ActionEvent>() {
+    			
+    			@Override public void handle(ActionEvent e)
+    			{
+    				secondaryStage.close();
+    			}
+    		}
+    				
+    			);
+    		for(int i = 0; i<text.size();i++)
+    		{
+    			text.get(i).setFont(new Font(10));
+    		}
+    		list.getChildren().addAll(text);
+    		list.getChildren().add(back);
+    		list.setSpacing(20);
+    		Group root = new Group(list);
+    		Scene scene = new Scene(root, 600,300);
+    		secondaryStage.setScene(scene);
+    		secondaryStage.show();
+    	}
+    	catch(Exception e)
+    	{
+    		
+    	}
+    }
+    
+    
+    
     public void checkinAnimals(Stage secondaryStage,int o)
     {
     	try {
@@ -31,6 +74,7 @@ public class petsSpaGUI extends Application
     		{
     			b.add(new Button(owners.get(o).getPets().get(i).getName()));
     			text.add(new Text());
+    			text.get(i).setFont(new Font(20));
     		}
     		for(int i = 0;i< b.size();i++)
     		{
@@ -38,7 +82,9 @@ public class petsSpaGUI extends Application
     			b.get(i).setOnAction(new EventHandler<ActionEvent>() {
     				@Override public void handle(ActionEvent e)
     				{
+    					System.out.println("in");
     					owners.get(o).getPets().get(spot).setIn(true);
+    					text.get(spot).setText("Checked in");
     				}
     			});
     		}
@@ -57,9 +103,11 @@ public class petsSpaGUI extends Application
     		listb.getChildren().addAll(b);
     		listb.getChildren().add(back);
     		listb.setSpacing(20);
+    		listT.getChildren().addAll(text);
     		HBox row = new HBox();
     		row.getChildren().addAll(listb, listT);
-    		Group root = new Group(listb);
+    		row.setSpacing(25);
+    		Group root = new Group(row);
     		Scene scene = new Scene(root, 600,300);
     		secondaryStage.setScene(scene);
     		
@@ -138,7 +186,15 @@ public class petsSpaGUI extends Application
             Button trim = new Button("trim");
 
             Button petsThere = new Button("status");
-
+            petsThere.setOnAction(new EventHandler<ActionEvent>()
+            		{
+            	@Override public void handle(ActionEvent e)
+            	{
+            		System.out.print(true);
+            		showStatus(new Stage());
+            	}
+            		});
+            
             Button bills = new Button("bills");
 
             Button addCustomer = new Button("Add Customers");
